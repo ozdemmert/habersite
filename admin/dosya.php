@@ -102,7 +102,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     'category' => $_POST['category'],
                     'slug' => createSlug($_POST['title']),
                     'content' => $_POST['content'],
-                    'meta_description' => $_POST['meta_description'],
                     'user_id' => $_SESSION['user_id'],
                     'published' => isset($_POST['published']) ? 1 : 0,
                     'is_featured' => isset($_POST['is_featured']) ? 1 : 0

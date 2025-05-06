@@ -15,7 +15,7 @@ $category = new Category();
 $search = isset($_GET['search']) ? trim($_GET['search']) : '';
 $filter_category = isset($_GET['category']) ? $_GET['category'] : '';
 $filter_status = isset($_GET['status']) ? $_GET['status'] : '';
-$page = isset($_GET['page']) ? max(1, (int)$_GET['page']) : 1;
+$page = isset($_GET['page']) ? max(1, (int) $_GET['page']) : 1;
 $per_page = 10;
 $offset = ($page - 1) * $per_page;
 
@@ -140,6 +140,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 }
 
                 if ($fourNokta->create($data)) {
+                    $lastInsertedId = $conn->insert_id; // Get the ID of the newly created 4nokta1 entry
+                    if (!empty($_POST['categories'])) {
+                        foreach ($_POST['categories'] as $categoryId) {
+                            $categoryId = (int) $categoryId;
+                            $sql = "INSERT INTO 4nokta1_category (category_id, id) VALUES ($categoryId, $lastInsertedId)";
+                            $conn->query($sql);
+                        }
+                    }
                     header('Location: 4nokta1.php?success=created');
                     exit();
                 }
@@ -199,6 +207,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 }
 
                 if ($fourNokta->update($id, $data)) {
+                    // Clear existing category associations
+                    $conn->query("DELETE FROM 4nokta1_category WHERE id = $id");
+
+                    // Add new category associations
+                    if (!empty($_POST['categories'])) {
+                        foreach ($_POST['categories'] as $categoryId) {
+                            $categoryId = (int) $categoryId;
+                            $sql = "INSERT INTO 4nokta1_category (category_id, id) VALUES ($categoryId, $id)";
+                            $conn->query($sql);
+                        }
+                    }
                     header('Location: 4nokta1.php?success=updated');
                     exit();
                 }
@@ -232,7 +251,7 @@ function createSlug($str)
 
 <head>
 
-    <link rel="icon" href="../assets/images/minilogo.png">  
+    <link rel="icon" href="../assets/images/minilogo.png">
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -280,15 +299,16 @@ function createSlug($str)
                         <!-- Search Input -->
                         <div>
                             <label class="block text-sm font-medium text-gray-700 mb-1">Arama</label>
-                            <input type="text" name="search" value="<?php echo htmlspecialchars($search); ?>" 
-                                   placeholder="Başlık veya yazar ara..." 
-                                   class="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                            <input type="text" name="search" value="<?php echo htmlspecialchars($search); ?>"
+                                placeholder="Başlık veya yazar ara..."
+                                class="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
                         </div>
-                        
+
                         <!-- Category Filter -->
                         <div>
                             <label class="block text-sm font-medium text-gray-700 mb-1">Kategori</label>
-                            <select name="category" class="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                            <select name="category"
+                                class="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
                                 <option value="">Tüm Kategoriler</option>
                                 <?php foreach ($categories as $cat): ?>
                                     <option value="<?php echo $cat['name']; ?>" <?php echo $filter_category === $cat['name'] ? 'selected' : ''; ?>>
@@ -297,20 +317,24 @@ function createSlug($str)
                                 <?php endforeach; ?>
                             </select>
                         </div>
-                        
+
                         <!-- Status Filter -->
                         <div>
                             <label class="block text-sm font-medium text-gray-700 mb-1">Durum</label>
-                            <select name="status" class="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                            <select name="status"
+                                class="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
                                 <option value="">Tüm Durumlar</option>
-                                <option value="published" <?php echo $filter_status === 'published' ? 'selected' : ''; ?>>Yayında</option>
-                                <option value="draft" <?php echo $filter_status === 'draft' ? 'selected' : ''; ?>>Taslak</option>
+                                <option value="published" <?php echo $filter_status === 'published' ? 'selected' : ''; ?>>
+                                    Yayında</option>
+                                <option value="draft" <?php echo $filter_status === 'draft' ? 'selected' : ''; ?>>Taslak
+                                </option>
                             </select>
                         </div>
-                        
+
                         <!-- Search Button -->
                         <div class="flex items-end">
-                            <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-md transition duration-150 ease-in-out">
+                            <button type="submit"
+                                class="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-md transition duration-150 ease-in-out">
                                 <i class="fas fa-search mr-2"></i>Ara
                             </button>
                         </div>
@@ -328,9 +352,10 @@ function createSlug($str)
                         </a>
                     <?php endif; ?>
                 </div>
-                
+
                 <!-- Add Button -->
-                <button onclick="showAddModal()" class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-md transition duration-150 ease-in-out">
+                <button onclick="showAddModal()"
+                    class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-md transition duration-150 ease-in-out">
                     <i class="fas fa-plus mr-2"></i>Yeni 4 Nokta 1 Ekle
                 </button>
             </div>
@@ -340,23 +365,17 @@ function createSlug($str)
                 <table class="min-w-full divide-y divide-gray-200">
                     <thead class="bg-gray-50">
                         <tr>
-                            <th
-                                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                 Başlık</th>
-                            <th
-                                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                 Kategori</th>
-                            <th
-                                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                 Yazarlar</th>
-                            <th
-                                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                 Durum</th>
-                            <th
-                                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                 Tarih</th>
-                            <th
-                                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                 İşlemler</th>
                         </tr>
                     </thead>
@@ -367,98 +386,99 @@ function createSlug($str)
                                     Kayıt bulunamadı.
                                 </td>
                             </tr>
-                        <?php else: foreach ($all_items as $item): ?>
-                            <tr>
-                                <td class="px-6 py-4 whitespace-nowrap">
-                                    <div class="flex items-center">
-                                        <?php if ($item['featured_image']): ?>
-                                            <img class="h-10 w-10 rounded-full object-cover mr-3"
-                                                src="../<?php echo $item['featured_image']; ?>" alt="">
-                                        <?php endif; ?>
-                                        <div class="text-sm font-medium text-gray-900"><?php echo $item['title']; ?>
+                        <?php else:
+                            foreach ($all_items as $item): ?>
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="flex items-center">
+                                            <?php if ($item['featured_image']): ?>
+                                                <img class="h-10 w-10 rounded-full object-cover mr-3"
+                                                    src="../<?php echo $item['featured_image']; ?>" alt="">
+                                            <?php endif; ?>
+                                            <div class="text-sm font-medium text-gray-900"><?php echo $item['title']; ?>
+                                            </div>
                                         </div>
-                                    </div>
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap">
-                                    <div class="text-sm text-gray-900"><?php echo $item['category']; ?></div>
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap">
-                                    <div class="text-sm text-gray-900"><?php echo $item['authors']; ?></div>
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap">
-                                    <span
-                                        class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full <?php echo $item['published'] ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'; ?>">
-                                        <?php echo $item['published'] ? 'Yayında' : 'Taslak'; ?>
-                                    </span>
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                    <?php echo date('d.m.Y H:i', strtotime($item['created_at'])); ?>
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                    <button onclick="editItem(<?php echo htmlspecialchars(json_encode($item)); ?>)"
-                                        class="text-indigo-600 hover:text-indigo-900 mr-3">
-                                        <i class="fas fa-edit"></i>
-                                    </button>
-                                    <button onclick="deleteItem(<?php echo $item['id']; ?>)"
-                                        class="text-red-600 hover:text-red-900">
-                                        <i class="fas fa-trash"></i>
-                                    </button>
-                                </td>
-                            </tr>
-                        <?php endforeach; endif; ?>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="text-sm text-gray-900"><?php echo $item['category']; ?></div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="text-sm text-gray-900"><?php echo $item['authors']; ?></div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <span
+                                            class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full <?php echo $item['published'] ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'; ?>">
+                                            <?php echo $item['published'] ? 'Yayında' : 'Taslak'; ?>
+                                        </span>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                        <?php echo date('d.m.Y H:i', strtotime($item['created_at'])); ?>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                        <button onclick="editItem(<?php echo htmlspecialchars(json_encode($item)); ?>)"
+                                            class="text-indigo-600 hover:text-indigo-900 mr-3">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                        <button onclick="deleteItem(<?php echo $item['id']; ?>)"
+                                            class="text-red-600 hover:text-red-900">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            <?php endforeach; endif; ?>
                     </tbody>
                 </table>
             </div>
 
             <!-- Pagination -->
             <?php if ($total_pages > 1): ?>
-            <div class="flex justify-between items-center mt-6">
-                <div class="text-sm text-gray-500">
-                    Sayfa <?php echo $page; ?> / <?php echo $total_pages; ?>
-                </div>
-                <div class="flex gap-1">
-                    <?php if ($page > 1): ?>
-                        <a href="?<?php echo http_build_query(array_merge($_GET, ['page' => $page - 1])); ?>" 
-                           class="px-3 py-1 rounded border bg-white text-gray-700 hover:bg-gray-50">
-                            <i class="fas fa-chevron-left"></i>
-                        </a>
-                    <?php endif; ?>
-                    
-                    <?php
-                    $start = max(1, $page - 2);
-                    $end = min($total_pages, $page + 2);
-                    
-                    if ($start > 1): ?>
-                        <a href="?<?php echo http_build_query(array_merge($_GET, ['page' => 1])); ?>" 
-                           class="px-3 py-1 rounded border bg-white text-gray-700 hover:bg-gray-50">1</a>
-                        <?php if ($start > 2): ?>
-                            <span class="px-3 py-1">...</span>
+                <div class="flex justify-between items-center mt-6">
+                    <div class="text-sm text-gray-500">
+                        Sayfa <?php echo $page; ?> / <?php echo $total_pages; ?>
+                    </div>
+                    <div class="flex gap-1">
+                        <?php if ($page > 1): ?>
+                            <a href="?<?php echo http_build_query(array_merge($_GET, ['page' => $page - 1])); ?>"
+                                class="px-3 py-1 rounded border bg-white text-gray-700 hover:bg-gray-50">
+                                <i class="fas fa-chevron-left"></i>
+                            </a>
                         <?php endif; ?>
-                    <?php endif; ?>
-                    
-                    <?php for ($i = $start; $i <= $end; $i++): ?>
-                        <a href="?<?php echo http_build_query(array_merge($_GET, ['page' => $i])); ?>" 
-                           class="px-3 py-1 rounded border <?php echo $i == $page ? 'bg-blue-600 text-white' : 'bg-white text-gray-700 hover:bg-gray-50'; ?>">
-                            <?php echo $i; ?>
-                        </a>
-                    <?php endfor; ?>
-                    
-                    <?php if ($end < $total_pages): ?>
-                        <?php if ($end < $total_pages - 1): ?>
-                            <span class="px-3 py-1">...</span>
+
+                        <?php
+                        $start = max(1, $page - 2);
+                        $end = min($total_pages, $page + 2);
+
+                        if ($start > 1): ?>
+                            <a href="?<?php echo http_build_query(array_merge($_GET, ['page' => 1])); ?>"
+                                class="px-3 py-1 rounded border bg-white text-gray-700 hover:bg-gray-50">1</a>
+                            <?php if ($start > 2): ?>
+                                <span class="px-3 py-1">...</span>
+                            <?php endif; ?>
                         <?php endif; ?>
-                        <a href="?<?php echo http_build_query(array_merge($_GET, ['page' => $total_pages])); ?>" 
-                           class="px-3 py-1 rounded border bg-white text-gray-700 hover:bg-gray-50"><?php echo $total_pages; ?></a>
-                    <?php endif; ?>
-                    
-                    <?php if ($page < $total_pages): ?>
-                        <a href="?<?php echo http_build_query(array_merge($_GET, ['page' => $page + 1])); ?>" 
-                           class="px-3 py-1 rounded border bg-white text-gray-700 hover:bg-gray-50">
-                            <i class="fas fa-chevron-right"></i>
-                        </a>
-                    <?php endif; ?>
+
+                        <?php for ($i = $start; $i <= $end; $i++): ?>
+                            <a href="?<?php echo http_build_query(array_merge($_GET, ['page' => $i])); ?>"
+                                class="px-3 py-1 rounded border <?php echo $i == $page ? 'bg-blue-600 text-white' : 'bg-white text-gray-700 hover:bg-gray-50'; ?>">
+                                <?php echo $i; ?>
+                            </a>
+                        <?php endfor; ?>
+
+                        <?php if ($end < $total_pages): ?>
+                            <?php if ($end < $total_pages - 1): ?>
+                                <span class="px-3 py-1">...</span>
+                            <?php endif; ?>
+                            <a href="?<?php echo http_build_query(array_merge($_GET, ['page' => $total_pages])); ?>"
+                                class="px-3 py-1 rounded border bg-white text-gray-700 hover:bg-gray-50"><?php echo $total_pages; ?></a>
+                        <?php endif; ?>
+
+                        <?php if ($page < $total_pages): ?>
+                            <a href="?<?php echo http_build_query(array_merge($_GET, ['page' => $page + 1])); ?>"
+                                class="px-3 py-1 rounded border bg-white text-gray-700 hover:bg-gray-50">
+                                <i class="fas fa-chevron-right"></i>
+                            </a>
+                        <?php endif; ?>
+                    </div>
                 </div>
-            </div>
             <?php endif; ?>
         </main>
     </div>

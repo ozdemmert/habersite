@@ -1,0 +1,15 @@
+RewriteEngine On
+
+# Eğer istek yapılan dosya veya dizin varsa, aynen sun
+RewriteCond %{REQUEST_FILENAME} -f [OR]
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^ - [L]
+
+# Uzantısız URL'yi varsa karşılık gelen .php dosyasına yönlendir (gizli .php)
+RewriteCond %{REQUEST_FILENAME}.php -f
+RewriteRule ^([^/]+)$ $1.php [L]
+
+# Geriye kalan her şeyi 404.php'ye yönlendir
+RewriteRule ^.*$ 404.php [L]
+
+ErrorDocument 404 404.php

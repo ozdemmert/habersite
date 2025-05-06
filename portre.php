@@ -11,7 +11,7 @@ $latest_portrait = $portre->getLatest();
 
 // Remove the latest portrait from the list to avoid duplication
 if (!empty($latest_portrait) && !empty($portres)) {
-    $portres = array_filter($portres, function($item) use ($latest_portrait) {
+    $portres = array_filter($portres, function ($item) use ($latest_portrait) {
         return $item['id'] != $latest_portrait['id'];
     });
 }
@@ -30,6 +30,7 @@ $page_items = array_slice($portres, $offset, $per_page);
 ?>
 <!DOCTYPE html>
 <html lang="tr">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -40,6 +41,7 @@ $page_items = array_slice($portres, $offset, $per_page);
         body {
             background-color: #f7f7f7;
         }
+
         .featured-card {
             transition: all 0.3s ease;
             border: 1px solid #eaeaea;
@@ -51,6 +53,7 @@ $page_items = array_slice($portres, $offset, $per_page);
             display: flex;
             width: 100%;
         }
+
         .featured-image {
             width: 40%;
             flex-shrink: 0;
@@ -60,15 +63,18 @@ $page_items = array_slice($portres, $offset, $per_page);
             justify-content: center;
             border-right: 1px solid #eaeaea;
         }
+
         .featured-image img {
             width: 100%;
             height: 100%;
             object-fit: cover;
         }
+
         .featured-content {
             flex: 1;
             padding: 30px;
         }
+
         .portre-card {
             transition: all 0.3s ease;
             border: 1px solid #eaeaea;
@@ -80,10 +86,12 @@ $page_items = array_slice($portres, $offset, $per_page);
             display: flex;
             width: 100%;
         }
+
         .portre-card:hover {
             transform: translateY(-5px);
             box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
         }
+
         .portre-image {
             width: 240px;
             height: 240px;
@@ -94,15 +102,18 @@ $page_items = array_slice($portres, $offset, $per_page);
             justify-content: center;
             border-right: 1px solid #eaeaea;
         }
+
         .portre-image img {
             width: 100%;
             height: 100%;
             object-fit: cover;
         }
+
         .portre-content {
             flex: 1;
             padding: 24px;
         }
+
         .quote-block {
             position: relative;
             font-style: italic;
@@ -112,6 +123,7 @@ $page_items = array_slice($portres, $offset, $per_page);
             font-size: 0.9rem;
             margin: 10px 0;
         }
+
         .portreyi-oku {
             background-color: #022d5a;
             color: white;
@@ -121,14 +133,17 @@ $page_items = array_slice($portres, $offset, $per_page);
             border-radius: 4px;
             display: inline-block;
         }
+
         .portreyi-oku:hover {
             background-color: #f39200;
         }
+
         .page-title {
             position: relative;
             display: inline-block;
             color: #022d5a;
         }
+
         .page-title:after {
             content: '';
             position: absolute;
@@ -138,43 +153,54 @@ $page_items = array_slice($portres, $offset, $per_page);
             height: 3px;
             background-color: #f39200;
         }
+
         .pagination {
             display: flex;
             justify-content: center;
             gap: 4px;
         }
+
         .pagination a {
             border: 1px solid #e2e8f0;
             padding: 6px 12px;
             border-radius: 4px;
         }
+
         .pagination a.active {
             background-color: #022d5a;
             color: white;
         }
+
         .pagination a:hover:not(.active) {
             background-color: #f8fafc;
         }
+
         @media (max-width: 768px) {
-            .portre-card, .featured-card {
+
+            .portre-card,
+            .featured-card {
                 flex-direction: column;
             }
-            .portre-image, .featured-image {
+
+            .portre-image,
+            .featured-image {
                 width: 100%;
                 height: 200px;
                 border-right: none;
                 border-bottom: 1px solid #eaeaea;
             }
+
             .featured-image {
                 height: 250px;
             }
         }
     </style>
 </head>
-<body>
-<?php require_once 'templates/header.php'; ?>
-    <main class="min-h-screen py-8">
-        <div class="max-w-5xl mx-auto px-4">
+
+<body class="bg-white">
+    <?php require_once 'templates/header.php'; ?>
+    <main class="w-[1080px] m-auto py-6">
+        <div class="max-w-5xl mx-auto px-0 pl-4">
             <!-- Breadcrumb -->
             <div class="mb-4">
                 <div class="flex items-center text-sm text-gray-500">
@@ -186,137 +212,122 @@ $page_items = array_slice($portres, $offset, $per_page);
 
             <!-- Featured Portrait -->
             <?php if (!empty($latest_portrait)): ?>
-            <div class="featured-card">
-                <div class="featured-image">
-                    <?php if (!empty($latest_portrait['portre_image'])): ?>
-                        <img src="<?php echo $latest_portrait['portre_image']; ?>" 
-                            alt="<?php echo htmlspecialchars($latest_portrait['first_name'] . ' ' . $latest_portrait['lastname']); ?>">
-                    <?php else: ?>
-                        <span class="text-gray-400">Görsel Yok</span>
-                    <?php endif; ?>
-                </div>
-                <div class="featured-content">
-                    <h2 class="text-2xl font-bold mb-1 text-[#022d5a]">Prof. Dr. <?php echo htmlspecialchars($latest_portrait['first_name'] . ' ' . $latest_portrait['lastname']); ?></h2>
-                    <p class="text-[#f39200] mb-4"><?php echo htmlspecialchars($latest_portrait['degree']); ?></p>
-                    
-                    <?php if (!empty($latest_portrait['quote'])): ?>
-                        <div class="quote-block mb-4">
-                            "<?php echo htmlspecialchars($latest_portrait['quote']); ?>"
+                <div class="featured-card">
+                    <div class="featured-image">
+                        <?php if (!empty($latest_portrait['portre_image'])): ?>
+                            <img src="<?php echo $latest_portrait['portre_image']; ?>"
+                                alt="<?php echo htmlspecialchars($latest_portrait['first_name'] . ' ' . $latest_portrait['lastname']); ?>">
+                        <?php else: ?>
+                            <span class="text-gray-400">Görsel Yok</span>
+                        <?php endif; ?>
+                    </div>
+                    <div class="featured-content">
+                        <h2 class="text-2xl font-bold mb-1 text-[#022d5a]">Prof. Dr.
+                            <?php echo htmlspecialchars($latest_portrait['first_name'] . ' ' . $latest_portrait['lastname']); ?>
+                        </h2>
+                        <p class="text-[#f39200] mb-4"><?php echo htmlspecialchars($latest_portrait['degree']); ?></p>
+
+                        <?php if (!empty($latest_portrait['quote'])): ?>
+                            <div class="quote-block mb-4">
+                                "<?php echo htmlspecialchars($latest_portrait['quote']); ?>"
+                            </div>
+                        <?php endif; ?>
+
+                        <p class="text-gray-600 mb-6">
+                            <?php
+                            $short_bio = strip_tags($latest_portrait['biography']);
+                            $short_bio = mb_strlen($short_bio) > 220 ? mb_substr($short_bio, 0, 220) . '...' : $short_bio;
+                            echo htmlspecialchars($short_bio);
+                            ?>
+                        </p>
+
+                        <div>
+                            <a href="portre_detay.php?id=<?php echo $latest_portrait['id']; ?>" class="portreyi-oku">
+                                Devamını Oku
+                            </a>
                         </div>
-                    <?php endif; ?>
-                    
-                    <p class="text-gray-600 mb-6">
-                        <?php 
-                        // Shorten the biography
-                        $short_bio = strip_tags($latest_portrait['biography']);
-                        $short_bio = mb_strlen($short_bio) > 220 ? mb_substr($short_bio, 0, 220) . '...' : $short_bio;
-                        echo htmlspecialchars($short_bio); 
-                        ?>
-                    </p>
-                    
-                    <div>
-                        <a href="portre_detay.php?id=<?php echo $latest_portrait['id']; ?>" class="portreyi-oku">
-                            Devamını Oku
-                        </a>
                     </div>
                 </div>
-            </div>
             <?php endif; ?>
 
             <!-- Other Portraits Section Title -->
             <h1 class="page-title text-3xl font-bold mb-2">Diğer Portreler</h1>
             <p class="text-[#f39200] mb-8">Önemli şahsiyetlerin hayatları ve hikayeleri</p>
 
-            <!-- Portraits List (horizontal cards) -->
+            <!-- Portraits List -->
             <div class="mb-10">
                 <?php foreach ($page_items as $item): ?>
-                <div class="portre-card">
-                    <div class="portre-image">
-                        <?php if (!empty($item['portre_image'])): ?>
-                            <img src="<?php echo $item['portre_image']; ?>" 
-                                alt="<?php echo htmlspecialchars($item['first_name'] . ' ' . $item['lastname']); ?>">
-                        <?php else: ?>
-                            <span class="text-gray-400">Görsel Yok</span>
-                        <?php endif; ?>
-                    </div>
-                    <div class="portre-content">
-                        <h2 class="text-xl font-bold mb-1 text-[#022d5a]">Prof. Dr. <?php echo htmlspecialchars($item['first_name'] . ' ' . $item['lastname']); ?></h2>
-                        <p class="text-[#f39200] text-sm mb-4"><?php echo htmlspecialchars($item['degree']); ?></p>
-                        
-                        <?php if (!empty($item['quote'])): ?>
-                            <div class="quote-block mb-4">
-                                "<?php echo htmlspecialchars($item['quote']); ?>"
-                            </div>
-                        <?php else: ?>
-                            <?php
-                            // Extract first quote from biography if the quote field is empty
-                            preg_match('/"([^"]*)"/', $item['biography'], $matches);
-                            $biography_quote = isset($matches[1]) ? $matches[1] : '';
-                            
-                            if ($biography_quote): ?>
+                    <div class="portre-card">
+                        <div class="portre-image">
+                            <?php if (!empty($item['portre_image'])): ?>
+                                <img src="<?php echo $item['portre_image']; ?>"
+                                    alt="<?php echo htmlspecialchars($item['first_name'] . ' ' . $item['lastname']); ?>">
+                            <?php else: ?>
+                                <span class="text-gray-400">Görsel Yok</span>
+                            <?php endif; ?>
+                        </div>
+                        <div class="portre-content">
+                            <h2 class="text-xl font-bold mb-1 text-[#022d5a]">Prof. Dr.
+                                <?php echo htmlspecialchars($item['first_name'] . ' ' . $item['lastname']); ?></h2>
+                            <p class="text-[#f39200] text-sm mb-4"><?php echo htmlspecialchars($item['degree']); ?></p>
+
+                            <?php if (!empty($item['quote'])): ?>
                                 <div class="quote-block mb-4">
-                                    "<?php echo htmlspecialchars($biography_quote); ?>"
+                                    "<?php echo htmlspecialchars($item['quote']); ?>"
                                 </div>
                             <?php endif; ?>
-                        <?php endif; ?>
-                        
-                        <p class="text-sm text-gray-600 mb-4">
-                            <?php 
-                            // Remove any quotes from biography if using a quote from biography
-                            $biography = $item['biography'];
-                            if (empty($item['quote']) && !empty($biography_quote)) {
-                                $biography = str_replace('"' . $biography_quote . '"', '', $biography);
-                            }
-                            
-                            // Shorten the biography
-                            $short_bio = strip_tags($biography);
-                            $short_bio = mb_strlen($short_bio) > 180 ? mb_substr($short_bio, 0, 180) . '...' : $short_bio;
-                            echo htmlspecialchars($short_bio); 
-                            ?>
-                        </p>
-                        
-                        <div>
-                            <a href="portre_detay.php?id=<?php echo $item['id']; ?>" class="portreyi-oku">
-                                Portreyi Oku
-                            </a>
+
+                            <p class="text-sm text-gray-600 mb-4">
+                                <?php
+                                $short_bio = strip_tags($item['biography']);
+                                $short_bio = mb_strlen($short_bio) > 180 ? mb_substr($short_bio, 0, 180) . '...' : $short_bio;
+                                echo htmlspecialchars($short_bio);
+                                ?>
+                            </p>
+
+                            <div>
+                                <a href="portre_detay.php?id=<?php echo $item['id']; ?>" class="portreyi-oku">
+                                    Portreyi Oku
+                                </a>
+                            </div>
                         </div>
                     </div>
-                </div>
                 <?php endforeach; ?>
             </div>
-            
+
             <!-- Pagination -->
             <?php if ($total_pages > 1): ?>
-            <div class="pagination mb-8">
-                <?php if ($current_page > 1): ?>
-                    <a href="?page=<?php echo $current_page - 1; ?>">&lt;</a>
-                <?php endif; ?>
-                
-                <?php 
-                $start = max(1, $current_page - 1);
-                $end = min($total_pages, $start + 2);
-                $start = max(1, $end - 2);
-                
-                for ($i = $start; $i <= $end; $i++): 
-                ?>
-                    <a href="?page=<?php echo $i; ?>" class="<?php echo $i === $current_page ? 'active' : ''; ?>">
-                        <?php echo $i; ?>
-                    </a>
-                <?php endfor; ?>
-                
-                <?php if ($current_page < $total_pages): ?>
-                    <a href="?page=<?php echo $current_page + 1; ?>">&gt;</a>
-                <?php endif; ?>
-            </div>
+                <div class="pagination mb-8">
+                    <?php if ($current_page > 1): ?>
+                        <a href="?page=<?php echo $current_page - 1; ?>">&lt;</a>
+                    <?php endif; ?>
+
+                    <?php
+                    $start = max(1, $current_page - 1);
+                    $end = min($total_pages, $start + 2);
+                    $start = max(1, $end - 2);
+
+                    for ($i = $start; $i <= $end; $i++):
+                        ?>
+                        <a href="?page=<?php echo $i; ?>" class="<?php echo $i === $current_page ? 'active' : ''; ?>">
+                            <?php echo $i; ?>
+                        </a>
+                    <?php endfor; ?>
+
+                    <?php if ($current_page < $total_pages): ?>
+                        <a href="?page=<?php echo $current_page + 1; ?>">&gt;</a>
+                    <?php endif; ?>
+                </div>
             <?php endif; ?>
-            
+
             <?php if (empty($page_items)): ?>
-            <div class="text-center py-10">
-                <p class="text-gray-500">Henüz portre bulunmamaktadır.</p>
-            </div>
+                <div class="text-center py-10">
+                    <p class="text-gray-500">Henüz portre bulunmamaktadır.</p>
+                </div>
             <?php endif; ?>
         </div>
     </main>
     <?php require_once 'templates/footer.php'; ?>
 </body>
-</html> 
+
+</html>

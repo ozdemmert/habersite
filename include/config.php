@@ -199,6 +199,7 @@ try {
     mysqli_query($conn, $sql);
     $sql = "CREATE TABLE IF NOT EXISTS 4nokta1_category (
         id INT(11) NOT NULL AUTO_INCREMENT,
+        category_id INT(11) NOT NULL,
         name VARCHAR(100) NOT NULL,
         slug VARCHAR(100) NOT NULL,
         description TEXT,

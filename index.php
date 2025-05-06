@@ -77,9 +77,6 @@ $latestPortre = $portreObj->getLatest();
 <?php require_once 'templates/header.php'; ?>
     <main class="min-h-screen py-4">
         <div class="content-wrapper">
-            
-        
-
             <!-- Featured Stories Grid -->
             <div class="grid grid-cols-3 gap-3 mb-12">
                 <?php foreach($storyNews as $index => $news): ?>
@@ -269,9 +266,5 @@ $latestPortre = $portreObj->getLatest();
         </div>
         <?php require_once 'templates/footer.php'; ?>
     </main>
-
-    
-
-  
 </body>
 </html> 
