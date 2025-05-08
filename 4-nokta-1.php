@@ -89,93 +89,162 @@ function isActiveCat($cat_id, $active) {
                 </ol>
             </nav>
 
-            <!-- Başlık ve Açıklama -->
-            <div class="mb-8">
-                <h1 class="text-3xl font-bold text-gray-900 sm:text-4xl">4 Nokta 1</h1>
-                <p class="mt-4 max-w-3xl text-lg text-gray-500">
-                    4 Nokta 1, aynı konuya farklı uzmanların standartlardan 4 başlık haline ayrılmış bakış açıları ile tartışıldığı bir içerik formatıdır. Aynı konunun farklı yönleriyle bütüncül bir şekilde ele alınmasını sağlar.
-                </p>
-            </div>
-
-            <!-- Kategori Filtreleri -->
-            <div class="mb-8">
-                <div class="flex flex-wrap gap-2">
-                    <button onclick="window.location.href='?'" class="inline-flex items-center px-4 py-2 rounded-md text-sm font-medium <?php echo $active_category == 0 ? 'bg-[#022d5a] text-white' : 'bg-white text-gray-700 hover:bg-gray-50 border border-gray-300'; ?> transition-colors duration-200">
-                        Tümü
-                    </button>
-                    <?php foreach($categories as $cat): ?>
-                        <button onclick="window.location.href='?cat=<?php echo $cat['id']; ?>'" class="inline-flex items-center px-4 py-2 rounded-md text-sm font-medium <?php echo isActiveCat($cat['id'], $active_category); ?> bg-white border border-gray-300 transition-colors duration-200">
-                            <?php echo htmlspecialchars($cat['name']); ?>
-                        </button>
-                    <?php endforeach; ?>
+            <!-- Concept Section -->
+            <section class="concept-section mb-12 border-b border-gray-200 pb-8">
+                <div class="max-w-3xl">
+                    <h2 class="section-title text-2xl font-bold mb-4">Konsept</h2>
+                    <p class="text-gray-700 mb-4">
+                        4 Nokta 1, aynı konuya farklı uzmanların standartlardan 4 başlık haline ayrılmış bakış açıları ile tartışıldığı bir içerik formatıdır. Aynı konunun farklı yönleriyle bütüncül bir şekilde ele alınmasını sağlar.
+                    </p>
                 </div>
-            </div>
+            </section>
 
-            <!-- İçerik Grid -->
-            <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 mb-8">
-                <?php if ($all_items): foreach($all_items as $item): ?>
-                <div class="group relative bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow overflow-hidden">
-                    <a href="4-nokta-1-detay.php?id=<?php echo $item['id']; ?>" class="block">
-                        <div class="aspect-w-16 aspect-h-9 relative">
-                            <?php if (!empty($item['featured_image'])): ?>
-                                <img src="<?php echo $item['featured_image']; ?>" alt="<?php echo htmlspecialchars($item['title']); ?>" class="object-cover w-full h-48">
-                            <?php else: ?>
-                                <div class="w-full h-48 bg-gray-100 flex items-center justify-center">
-                                    <svg class="h-12 w-12 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                                    </svg>
+            <!-- Current Topic Section -->
+            <section class="current-topic mb-12">
+                <h2 class="section-title text-2xl font-bold mb-6 relative">
+                    Bu Haftanın Konusu
+                    <span class="section-icon absolute bottom-0 right-0 text-gray-300">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                        </svg>
+                    </span>
+                </h2>
+
+                <?php if ($all_items && count($all_items) > 0): ?>
+                <div class="topic-header border-b border-gray-200 pb-6 mb-6">
+                    <h3 class="topic-title text-xl font-bold mb-3"><?php echo htmlspecialchars($all_items[0]['title']); ?></h3>
+                    <p class="topic-description text-gray-700 mb-6"><?php echo htmlspecialchars($all_items[0]['explanation']); ?></p>
+                </div>
+
+                <div class="contributors-grid grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <?php 
+                    $authors = explode(', ', $all_items[0]['authors']);
+                    $authors_info = json_decode($all_items[0]['authors_info'], true);
+                    $authors_comments = json_decode($all_items[0]['authors_comments'], true);
+                    $authors_images = json_decode($all_items[0]['authors_image'], true);
+                    
+                    for ($i = 0; $i < 4; $i++): 
+                    ?>
+                    <div class="bg-white rounded-lg shadow-sm p-6">
+                        <div class="flex items-start space-x-4">
+                            <div class="flex-shrink-0">
+                                <?php if (!empty($authors_images[$i])): ?>
+                                    <img src="<?php echo $authors_images[$i]; ?>" alt="<?php echo htmlspecialchars($authors[$i]); ?>" class="h-16 w-16 rounded-full object-cover ring-2 ring-white">
+                                <?php else: ?>
+                                    <div class="h-16 w-16 rounded-full bg-gray-200 flex items-center justify-center ring-2 ring-white">
+                                        <svg class="h-8 w-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                                        </svg>
+                                    </div>
+                                <?php endif; ?>
+                            </div>
+                            <div class="min-w-0 flex-1">
+                                <h3 class="text-lg font-semibold text-gray-900"><?php echo htmlspecialchars($authors[$i]); ?></h3>
+                                <div class="mt-1 text-sm text-gray-500">
+                                    <?php echo $authors_info[$i]; ?>
                                 </div>
-                            <?php endif; ?>
-                            <div class="absolute top-4 left-4">
-                                <span class="inline-flex items-center px-3 py-0.5 rounded-full text-sm font-medium bg-[#022d5a] text-white">
-                                    <?php echo htmlspecialchars($item['category']); ?>
-                                </span>
+                                <div class="mt-4 text-sm text-gray-700 prose prose-sm max-w-none">
+                                    <?php echo $authors_comments[$i]; ?>
+                                </div>
                             </div>
                         </div>
-                        <div class="p-4">
-                            <div class="flex items-center text-sm text-gray-500 mb-2">
-                                <svg class="mr-1.5 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                                </svg>
-                                <?php echo date('d F Y', strtotime($item['created_at'])); ?>
-                            </div>
-                            <h3 class="text-lg font-semibold text-gray-900 line-clamp-2 group-hover:text-[#022d5a] transition-colors duration-200">
-                                <?php echo htmlspecialchars($item['title']); ?>
-                            </h3>
-                            <p class="mt-2 text-sm text-gray-500 line-clamp-3">
-                                <?php echo htmlspecialchars($item['explanation']); ?>
-                            </p>
-                            <div class="mt-4">
-                                <span class="inline-flex items-center text-sm font-medium text-[#f39200] group-hover:text-[#022d5a] transition-colors duration-200">
-                                    Devamını Oku
-                                    <svg class="ml-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-                                    </svg>
-                                </span>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-                <?php endforeach; else: ?>
-                    <div class="col-span-full flex items-center justify-center py-12 text-gray-500 text-lg">
-                        Bu kategoride içerik bulunamadı.
                     </div>
-                <?php endif; ?>
-            </div>
-
-            <!-- Pagination -->
-            <?php if ($total_pages > 1): ?>
-            <div class="flex justify-center">
-                <nav class="relative z-0 inline-flex rounded-md shadow-sm -space-x-px" aria-label="Pagination">
-                    <?php for ($i = 1; $i <= $total_pages; $i++): ?>
-                        <a href="?<?php echo $active_category ? 'cat='.$active_category.'&' : ''; ?>page=<?php echo $i; ?>" 
-                           class="relative inline-flex items-center px-4 py-2 <?php echo $i == 1 ? 'rounded-l-md' : ''; ?> <?php echo $i == $total_pages ? 'rounded-r-md' : ''; ?> <?php echo $i == $page ? 'z-10 bg-[#022d5a] text-white' : 'bg-white text-gray-500 hover:bg-gray-50'; ?> border border-gray-300 text-sm font-medium transition-colors duration-200">
-                            <?php echo $i; ?>
-                        </a>
                     <?php endfor; ?>
-                </nav>
-            </div>
-            <?php endif; ?>
+                </div>
+                <?php endif; ?>
+            </section>
+
+            <!-- Past Topics Section -->
+            <section class="past-topics mb-12">
+                <h2 class="section-title text-2xl font-bold mb-6 relative">
+                    Geçmiş Konular
+                    <span class="section-icon absolute bottom-0 right-0 text-gray-300">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                        </svg>
+                    </span>
+                </h2>
+
+                <!-- Kategori Filtreleri -->
+                <div class="mb-8">
+                    <div class="flex flex-wrap gap-2">
+                        <button onclick="window.location.href='?'" class="inline-flex items-center px-4 py-2 rounded-md text-sm font-medium <?php echo $active_category == 0 ? 'bg-[#022d5a] text-white' : 'bg-white text-gray-700 hover:bg-gray-50 border border-gray-300'; ?> transition-colors duration-200">
+                            Tümü
+                        </button>
+                        <?php foreach($categories as $cat): ?>
+                            <button onclick="window.location.href='?cat=<?php echo $cat['id']; ?>'" class="inline-flex items-center px-4 py-2 rounded-md text-sm font-medium <?php echo isActiveCat($cat['id'], $active_category); ?> bg-white border border-gray-300 transition-colors duration-200">
+                                <?php echo htmlspecialchars($cat['name']); ?>
+                            </button>
+                        <?php endforeach; ?>
+                    </div>
+                </div>
+
+                <!-- İçerik Grid -->
+                <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 mb-8">
+                    <?php if ($all_items): foreach(array_slice($all_items, 1) as $item): ?>
+                    <div class="group relative bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow overflow-hidden">
+                        <a href="4-nokta-1-detay.php?id=<?php echo $item['id']; ?>" class="block">
+                            <div class="aspect-w-16 aspect-h-9 relative">
+                                <?php if (!empty($item['featured_image'])): ?>
+                                    <img src="<?php echo $item['featured_image']; ?>" alt="<?php echo htmlspecialchars($item['title']); ?>" class="object-cover w-full h-48">
+                                <?php else: ?>
+                                    <div class="w-full h-48 bg-gray-100 flex items-center justify-center">
+                                        <svg class="h-12 w-12 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                        </svg>
+                                    </div>
+                                <?php endif; ?>
+                                <div class="absolute top-4 left-4">
+                                    <span class="inline-flex items-center px-3 py-0.5 rounded-full text-sm font-medium bg-[#022d5a] text-white">
+                                        <?php echo htmlspecialchars($item['category']); ?>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="p-4">
+                                <div class="flex items-center text-sm text-gray-500 mb-2">
+                                    <svg class="mr-1.5 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                    </svg>
+                                    <?php echo date('d F Y', strtotime($item['created_at'])); ?>
+                                </div>
+                                <h3 class="text-lg font-semibold text-gray-900 line-clamp-2 group-hover:text-[#022d5a] transition-colors duration-200">
+                                    <?php echo htmlspecialchars($item['title']); ?>
+                                </h3>
+                                <p class="mt-2 text-sm text-gray-500 line-clamp-3">
+                                    <?php echo htmlspecialchars($item['explanation']); ?>
+                                </p>
+                                <div class="mt-4">
+                                    <span class="inline-flex items-center text-sm font-medium text-[#f39200] group-hover:text-[#022d5a] transition-colors duration-200">
+                                        Devamını Oku
+                                        <svg class="ml-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                                        </svg>
+                                    </span>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    <?php endforeach; else: ?>
+                        <div class="col-span-full flex items-center justify-center py-12 text-gray-500 text-lg">
+                            Bu kategoride içerik bulunamadı.
+                        </div>
+                    <?php endif; ?>
+                </div>
+
+                <!-- Pagination -->
+                <?php if ($total_pages > 1): ?>
+                <div class="flex justify-center">
+                    <nav class="relative z-0 inline-flex rounded-md shadow-sm -space-x-px" aria-label="Pagination">
+                        <?php for ($i = 1; $i <= $total_pages; $i++): ?>
+                            <a href="?<?php echo $active_category ? 'cat='.$active_category.'&' : ''; ?>page=<?php echo $i; ?>" 
+                               class="relative inline-flex items-center px-4 py-2 <?php echo $i == 1 ? 'rounded-l-md' : ''; ?> <?php echo $i == $total_pages ? 'rounded-r-md' : ''; ?> <?php echo $i == $page ? 'z-10 bg-[#022d5a] text-white' : 'bg-white text-gray-500 hover:bg-gray-50'; ?> border border-gray-300 text-sm font-medium transition-colors duration-200">
+                                <?php echo $i; ?>
+                            </a>
+                        <?php endfor; ?>
+                    </nav>
+                </div>
+                <?php endif; ?>
+            </section>
         </div>
     </main>
     <?php require_once 'templates/footer.php'; ?>

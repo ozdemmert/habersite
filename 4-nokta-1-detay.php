@@ -37,6 +37,63 @@ $authors_images = json_decode($item['authors_image'], true);
         body {
             font-family: 'Inter', sans-serif;
         }
+        .prose {
+            max-width: 65ch;
+            color: #374151;
+        }
+        .prose p {
+            margin-top: 1.25em;
+            margin-bottom: 1.25em;
+        }
+        .prose h2 {
+            color: #111827;
+            font-weight: 700;
+            font-size: 1.5em;
+            margin-top: 2em;
+            margin-bottom: 1em;
+            line-height: 1.3333333;
+        }
+        .prose h3 {
+            color: #111827;
+            font-weight: 600;
+            font-size: 1.25em;
+            margin-top: 1.6em;
+            margin-bottom: 0.6em;
+            line-height: 1.6;
+        }
+        .prose ul {
+            margin-top: 1.25em;
+            margin-bottom: 1.25em;
+            padding-left: 1.625em;
+            list-style-type: disc;
+        }
+        .prose ol {
+            margin-top: 1.25em;
+            margin-bottom: 1.25em;
+            padding-left: 1.625em;
+            list-style-type: decimal;
+        }
+        .prose li {
+            margin-top: 0.5em;
+            margin-bottom: 0.5em;
+        }
+        .prose blockquote {
+            font-weight: 500;
+            font-style: italic;
+            color: #111827;
+            border-left-width: 0.25rem;
+            border-left-color: #e5e7eb;
+            quotes: "\201C""\201D""\2018""\2019";
+            margin-top: 1.6em;
+            margin-bottom: 1.6em;
+            padding-left: 1em;
+        }
+        .prose blockquote p:first-of-type::before {
+            content: open-quote;
+        }
+        .prose blockquote p:last-of-type::after {
+            content: close-quote;
+        }
     </style>
 </head>
 
@@ -153,6 +210,61 @@ $authors_images = json_decode($item['authors_image'], true);
                     </div>
                 <?php endif; ?>
             </article>
+
+            <!-- İlgili İçerikler -->
+            <?php
+            // İlgili içerikleri getir (aynı kategoriden)
+            $related_content = [];
+            if (!empty($item['category'])) {
+                $category = mysqli_real_escape_string($conn, $item['category']);
+                $sql = "SELECT * FROM 4nokta1 WHERE category = '{$category}' AND id != {$id} LIMIT 3";
+                $result = mysqli_query($conn, $sql);
+                if ($result) {
+                    $related_content = mysqli_fetch_all($result, MYSQLI_ASSOC);
+                }
+            }
+            ?>
+
+            <?php if (!empty($related_content)): ?>
+            <div class="mt-12">
+                <h2 class="text-2xl font-bold text-gray-900 mb-6">İlgili İçerikler</h2>
+                <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                    <?php foreach($related_content as $related): ?>
+                    <div class="group relative bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow overflow-hidden">
+                        <a href="4-nokta-1-detay.php?id=<?php echo $related['id']; ?>" class="block">
+                            <div class="aspect-w-16 aspect-h-9 relative">
+                                <?php if (!empty($related['featured_image'])): ?>
+                                    <img src="<?php echo $related['featured_image']; ?>" alt="<?php echo htmlspecialchars($related['title']); ?>" class="object-cover w-full h-48">
+                                <?php else: ?>
+                                    <div class="w-full h-48 bg-gray-100 flex items-center justify-center">
+                                        <svg class="h-12 w-12 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                        </svg>
+                                    </div>
+                                <?php endif; ?>
+                            </div>
+                            <div class="p-4">
+                                <h3 class="text-lg font-semibold text-gray-900 line-clamp-2 group-hover:text-[#022d5a] transition-colors duration-200">
+                                    <?php echo htmlspecialchars($related['title']); ?>
+                                </h3>
+                                <p class="mt-2 text-sm text-gray-500 line-clamp-3">
+                                    <?php echo htmlspecialchars($related['explanation']); ?>
+                                </p>
+                                <div class="mt-4">
+                                    <span class="inline-flex items-center text-sm font-medium text-[#f39200] group-hover:text-[#022d5a] transition-colors duration-200">
+                                        Devamını Oku
+                                        <svg class="ml-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                                        </svg>
+                                    </span>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    <?php endforeach; ?>
+                </div>
+            </div>
+            <?php endif; ?>
         </div>
     </main>
     <?php require_once 'templates/footer.php'; ?>
