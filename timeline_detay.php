@@ -63,7 +63,7 @@ function formatDate($date) {
 </head>
 <body class="bg-white">
     <?php require_once 'templates/header.php'; ?>
-    <main class="container mx-auto px-4 py-8">
+    <main class=" w-[1080px] m-auto container mx-auto px-4 py-8">
         <!-- Breadcrumb -->
         <nav class="text-sm text-gray-500 mb-6" aria-label="Breadcrumb">
             <ol class="list-none p-0 inline-flex">
