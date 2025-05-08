@@ -25,6 +25,10 @@ $categories = $categoryObj->getAll();
             transition: all 0.3s ease-in-out;
             /* Smooth transition for padding/height */
             /* No longer hiding/showing based on scroll direction */
+            transform: translateY(0);
+            opacity: 1;
+            visibility: visible;
+            transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
         }
 
         #menuDropdown {
@@ -74,7 +78,7 @@ $categories = $categoryObj->getAll();
 </head>
 
 <header class="w-full border-b border-gray-200 relative z-40">
-    <div class="bg-white transition-all duration-300 sticky top-0" id="stickyHeader">
+    <div class="bg-white transition-all duration-300 fixed top-0 left-0 right-0" id="stickyHeader">
         <div class="max-w-5xl mx-auto px-0 py-4 flex items-center justify-between" id="headerContent">
             <div class="flex items-center space-x-4 lg:w-1/3 pl-4">
                 <div class="relative">
@@ -204,6 +208,9 @@ $categories = $categoryObj->getAll();
         </nav>
     </div>
 
+    <!-- Add a spacer div to prevent content from hiding under fixed header -->
+    <div class="h-[120px] lg:h-[160px]"></div>
+
     <div id="menuBackdrop"
         class="fixed inset-0 bg-black bg-opacity-10 z-30 transition-opacity duration-300 opacity-0 pointer-events-none"
         onclick="toggleMenu()"></div>
@@ -217,7 +224,9 @@ $categories = $categoryObj->getAll();
     const bar1 = document.getElementById('menuBar1');
     const bar2 = document.getElementById('menuBar2');
     const bar3 = document.getElementById('menuBar3');
-    const logoImg = document.querySelector('#mainLogo img'); // Select the img element
+    const logoImg = document.querySelector('#mainLogo img');
+    const mainNav = document.getElementById('mainNav');
+    let lastScrollTop = 0;
 
     function toggleMenu() {
         isMenuOpen = !isMenuOpen;
@@ -267,29 +276,36 @@ $categories = $categoryObj->getAll();
 
     // Handle scroll events for sticky header effects
     window.addEventListener('scroll', function () {
-        if (window.scrollY > 100) {
-            stickyHeader.classList.add('header-sticky');
+        let currentScroll = window.pageYOffset || document.documentElement.scrollTop;
+
+        if (currentScroll > 100) {
             // Shrink logo using Tailwind classes
             logoImg.classList.remove('h-16', 'lg:h-24');
-            logoImg.classList.add('h-12', 'lg:h-16'); // Adjust sizes as needed
+            logoImg.classList.add('h-12', 'lg:h-16');
 
-            // Optionally reduce header padding when sticky
-            // stickyHeader.querySelector('.py-4').classList.add('py-2');
-
-
+            // Hide/show navbar based on scroll direction
+            if (currentScroll > lastScrollTop) {
+                // Scrolling down
+                mainNav.style.transform = 'translateY(-100%)';
+                mainNav.style.opacity = '0';
+            } else {
+                // Scrolling up
+                mainNav.style.transform = 'translateY(0)';
+                mainNav.style.opacity = '1';
+            }
         } else {
-            stickyHeader.classList.remove('header-sticky');
             // Restore logo size
             logoImg.classList.remove('h-12', 'lg:h-16');
             logoImg.classList.add('h-16', 'lg:h-24');
-
-            // Optionally restore header padding
-            // stickyHeader.querySelector('.py-4').classList.remove('py-2');
+            
+            // Always show navbar at the top
+            mainNav.style.transform = 'translateY(0)';
+            mainNav.style.opacity = '1';
         }
 
+        lastScrollTop = currentScroll <= 0 ? 0 : currentScroll;
+
         // If the menu is open and window resizes or scrolls, update its position for fixed dropdowns (mobile)
-        // This handles cases where the header height might change due to content loading
-        // or if the user scrolls while the menu is open on mobile
         if (isMenuOpen && window.innerWidth < 1024) {
             const headerHeight = stickyHeader.offsetHeight;
             menuDropdown.style.top = headerHeight + 'px';

@@ -52,9 +52,7 @@ function isActiveCat($cat_id, $active)
     <title>4 Nokta 1</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        body {
-            font-family: 'Inter', sans-serif;
-        }
+       
 
         .line-clamp-2 {
             display: -webkit-box;

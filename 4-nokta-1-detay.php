@@ -34,9 +34,7 @@ $authors_images = json_decode($item['authors_image'], true);
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        body {
-            font-family: 'Inter', sans-serif;
-        }
+       
         .prose {
             max-width: 65ch;
             color: #374151;
