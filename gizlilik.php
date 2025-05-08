@@ -20,6 +20,7 @@ $page_title = "Gizlilik Politikası";
 </head>
 <body class="bg-gray-50">
 <?php include 'templates/header.php'; ?>
+<div id="headerPlaceholder" class="hidden transition-all duration-300"></div>
 
 <main class="max-w-5xl mx-auto px-4 py-8">
     <div class="bg-white rounded-lg shadow-sm p-8">

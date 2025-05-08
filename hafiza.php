@@ -146,6 +146,7 @@ function isActiveCat($cat_id, $active)
 <body class="bg-white">
     <?php
     require_once 'templates/header.php';
+    require_once 'templates/backtotopbutton.php';
     ?>
     <main class="w-[1080px] m-auto py-6">
         <div class="max-w-5xl mx-auto px-0 pl-4">

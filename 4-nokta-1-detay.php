@@ -10,7 +10,7 @@ if (!isset($_GET['id']) || !is_numeric($_GET['id'])) {
     exit();
 }
 
-$id = (int)$_GET['id'];
+$id = (int) $_GET['id'];
 $item = $fourNokta->getById($id);
 
 if (!$item) {
@@ -26,6 +26,7 @@ $authors_images = json_decode($item['authors_image'], true);
 ?>
 <!DOCTYPE html>
 <html lang="tr">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -38,8 +39,10 @@ $authors_images = json_decode($item['authors_image'], true);
         }
     </style>
 </head>
+
 <body class="bg-gray-50">
-<?php require_once 'templates/header.php'; ?>
+    <?php require_once 'templates/header.php'; ?>
+    <?php require_once 'templates/backtotopbutton.php'; ?>
     <main class="min-h-screen py-8">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <!-- Breadcrumb -->
@@ -50,19 +53,25 @@ $authors_images = json_decode($item['authors_image'], true);
                     </li>
                     <li>
                         <svg class="h-5 w-5 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
-                            <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
+                            <path fill-rule="evenodd"
+                                d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                                clip-rule="evenodd" />
                         </svg>
                     </li>
                     <li>
-                        <a href="4-nokta-1.php" class="text-sm font-medium text-gray-500 hover:text-gray-700">4 Nokta 1</a>
+                        <a href="4-nokta-1.php" class="text-sm font-medium text-gray-500 hover:text-gray-700">4 Nokta
+                            1</a>
                     </li>
                     <li>
                         <svg class="h-5 w-5 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
-                            <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
+                            <path fill-rule="evenodd"
+                                d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                                clip-rule="evenodd" />
                         </svg>
                     </li>
                     <li>
-                        <span class="text-sm font-medium text-[#022d5a]"><?php echo htmlspecialchars($item['title']); ?></span>
+                        <span
+                            class="text-sm font-medium text-[#022d5a]"><?php echo htmlspecialchars($item['title']); ?></span>
                     </li>
                 </ol>
             </nav>
@@ -71,71 +80,82 @@ $authors_images = json_decode($item['authors_image'], true);
                 <!-- Başlık Bölümü -->
                 <div class="px-8 py-6 border-b border-gray-200">
                     <div class="flex items-center space-x-2 text-sm text-gray-500 mb-4">
-                        <span class="inline-flex items-center px-3 py-0.5 rounded-full text-sm font-medium bg-[#022d5a] text-white">
+                        <span
+                            class="inline-flex items-center px-3 py-0.5 rounded-full text-sm font-medium bg-[#022d5a] text-white">
                             <?php echo htmlspecialchars($item['category']); ?>
                         </span>
                         <span class="flex items-center">
                             <svg class="mr-1.5 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                             </svg>
                             <?php echo date('d F Y', strtotime($item['created_at'])); ?>
                         </span>
                     </div>
-                    <h1 class="text-3xl font-bold text-gray-900 mb-4"><?php echo htmlspecialchars($item['title']); ?></h1>
+                    <h1 class="text-3xl font-bold text-gray-900 mb-4"><?php echo htmlspecialchars($item['title']); ?>
+                    </h1>
                     <p class="text-lg text-gray-500"><?php echo htmlspecialchars($item['explanation']); ?></p>
                 </div>
 
                 <!-- Öne Çıkan Görsel -->
                 <?php if (!empty($item['featured_image'])): ?>
-                <div class="relative">
-                    <img src="<?php echo $item['featured_image']; ?>" alt="<?php echo htmlspecialchars($item['title']); ?>" class="w-full h-[400px] object-cover">
-                </div>
+                    <div class="relative">
+                        <img src="<?php echo $item['featured_image']; ?>"
+                            alt="<?php echo htmlspecialchars($item['title']); ?>" class="w-full h-[400px] object-cover">
+                    </div>
                 <?php endif; ?>
 
                 <!-- Yazarlar Grid -->
                 <div class="px-8 py-6">
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                         <?php for ($i = 0; $i < 4; $i++): ?>
-                        <div class="bg-gray-50 rounded-lg p-6">
-                            <div class="flex items-start space-x-4">
-                                <div class="flex-shrink-0">
-                                    <?php if (!empty($authors_images[$i])): ?>
-                                        <img src="<?php echo $authors_images[$i]; ?>" alt="<?php echo htmlspecialchars($authors[$i]); ?>" class="h-16 w-16 rounded-full object-cover ring-2 ring-white">
-                                    <?php else: ?>
-                                        <div class="h-16 w-16 rounded-full bg-gray-200 flex items-center justify-center ring-2 ring-white">
-                                            <svg class="h-8 w-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                                            </svg>
-                                        </div>
-                                    <?php endif; ?>
-                                </div>
-                                <div class="min-w-0 flex-1">
-                                    <h3 class="text-lg font-semibold text-gray-900"><?php echo htmlspecialchars($authors[$i]); ?></h3>
-                                    <div class="mt-1 text-sm text-gray-500">
-                                        <?php echo $authors_info[$i]; ?>
+                            <div class="bg-gray-50 rounded-lg p-6">
+                                <div class="flex items-start space-x-4">
+                                    <div class="flex-shrink-0">
+                                        <?php if (!empty($authors_images[$i])): ?>
+                                            <img src="<?php echo $authors_images[$i]; ?>"
+                                                alt="<?php echo htmlspecialchars($authors[$i]); ?>"
+                                                class="h-16 w-16 rounded-full object-cover ring-2 ring-white">
+                                        <?php else: ?>
+                                            <div
+                                                class="h-16 w-16 rounded-full bg-gray-200 flex items-center justify-center ring-2 ring-white">
+                                                <svg class="h-8 w-8 text-gray-400" fill="none" stroke="currentColor"
+                                                    viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                        d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                                                </svg>
+                                            </div>
+                                        <?php endif; ?>
                                     </div>
-                                    <div class="mt-4 text-sm text-gray-700 prose prose-sm max-w-none">
-                                        <?php echo $authors_comments[$i]; ?>
+                                    <div class="min-w-0 flex-1">
+                                        <h3 class="text-lg font-semibold text-gray-900">
+                                            <?php echo htmlspecialchars($authors[$i]); ?></h3>
+                                        <div class="mt-1 text-sm text-gray-500">
+                                            <?php echo $authors_info[$i]; ?>
+                                        </div>
+                                        <div class="mt-4 text-sm text-gray-700 prose prose-sm max-w-none">
+                                            <?php echo $authors_comments[$i]; ?>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
                         <?php endfor; ?>
                     </div>
                 </div>
 
                 <!-- Meta Açıklama -->
                 <?php if (!empty($item['meta_description'])): ?>
-                <div class="px-8 py-6 bg-gray-50 border-t border-gray-200">
-                    <h2 class="text-xl font-semibold text-gray-900 mb-4">Özet</h2>
-                    <div class="prose prose-lg max-w-none text-gray-500">
-                        <?php echo htmlspecialchars($item['meta_description']); ?>
+                    <div class="px-8 py-6 bg-gray-50 border-t border-gray-200">
+                        <h2 class="text-xl font-semibold text-gray-900 mb-4">Özet</h2>
+                        <div class="prose prose-lg max-w-none text-gray-500">
+                            <?php echo htmlspecialchars($item['meta_description']); ?>
+                        </div>
                     </div>
-                </div>
                 <?php endif; ?>
             </article>
         </div>
     </main>
     <?php require_once 'templates/footer.php'; ?>
 </body>
-</html> 
+
+</html>

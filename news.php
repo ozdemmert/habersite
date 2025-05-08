@@ -131,6 +131,7 @@ if (isset($news['category'])) {
 </head>
 <body class="bg-white">
 <?php require_once 'templates/header.php'; ?>
+<?php require_once 'templates/backtotopbutton.php'; ?>
     <main class="min-h-screen py-6">
         <div class="max-w-5xl mx-auto px-0 pl-4">
             <!-- Breadcrumb -->

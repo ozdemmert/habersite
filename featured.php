@@ -1,5 +1,6 @@
 <?php
 require_once 'templates/header.php';
+require_once 'templates/backtotopbutton.php';
 require_once 'include/functions.php';
 
 $newsObj = new News($conn);

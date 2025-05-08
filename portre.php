@@ -199,6 +199,7 @@ $page_items = array_slice($portres, $offset, $per_page);
 
 <body class="bg-white">
     <?php require_once 'templates/header.php'; ?>
+    <?php require_once 'templates/backtotopbutton.php'; ?>
     <main class="w-[1080px] m-auto py-6">
         <div class="max-w-5xl mx-auto px-0 pl-4">
             <!-- Breadcrumb -->
@@ -268,7 +269,8 @@ $page_items = array_slice($portres, $offset, $per_page);
                         </div>
                         <div class="portre-content">
                             <h2 class="text-xl font-bold mb-1 text-[#022d5a]">Prof. Dr.
-                                <?php echo htmlspecialchars($item['first_name'] . ' ' . $item['lastname']); ?></h2>
+                                <?php echo htmlspecialchars($item['first_name'] . ' ' . $item['lastname']); ?>
+                            </h2>
                             <p class="text-[#f39200] text-sm mb-4"><?php echo htmlspecialchars($item['degree']); ?></p>
 
                             <?php if (!empty($item['quote'])): ?>

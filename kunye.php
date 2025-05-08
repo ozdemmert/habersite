@@ -20,6 +20,7 @@ $page_title = "Künye";
 </head>
 <body class="bg-gray-50">
 <?php include 'templates/header.php'; ?>
+<?php require_once 'templates/backtotopbutton.php'; ?>
 
 <main class="max-w-5xl mx-auto px-4 py-8">
     <div class="bg-white rounded-lg shadow-sm p-8">
