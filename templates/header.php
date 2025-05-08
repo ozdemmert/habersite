@@ -29,6 +29,8 @@ $categories = $categoryObj->getAll();
             opacity: 1;
             visibility: visible;
             transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+            height: auto;
+            transition: height 0.3s ease-in-out, opacity 0.3s ease-in-out, padding 0.3s ease-in-out;
         }
 
         #menuDropdown {
@@ -179,7 +181,7 @@ $categories = $categoryObj->getAll();
         </div>
 
         <nav class="hidden lg:block py-3 border-t border-gray-200 transition-all duration-300 bg-white relative z-30"
-            id="mainNav">
+            id="mainNav" style="height: auto; overflow: hidden;">
             <div class="max-w-5xl mx-auto px-4">
                 <ul class="flex justify-center text-sm font-medium space-x-12">
                     <li><a href="index"
@@ -286,11 +288,15 @@ $categories = $categoryObj->getAll();
             // Hide/show navbar based on scroll direction
             if (currentScroll > lastScrollTop) {
                 // Scrolling down
-                mainNav.style.transform = 'translateY(-100%)';
+                mainNav.style.height = '0';
+                mainNav.style.padding = '0';
+                mainNav.style.borderTop = 'none';
                 mainNav.style.opacity = '0';
             } else {
                 // Scrolling up
-                mainNav.style.transform = 'translateY(0)';
+                mainNav.style.height = 'auto';
+                mainNav.style.padding = '0.75rem 0';
+                mainNav.style.borderTop = '1px solid #e5e7eb';
                 mainNav.style.opacity = '1';
             }
         } else {
@@ -299,7 +305,9 @@ $categories = $categoryObj->getAll();
             logoImg.classList.add('h-16', 'lg:h-24');
             
             // Always show navbar at the top
-            mainNav.style.transform = 'translateY(0)';
+            mainNav.style.height = 'auto';
+            mainNav.style.padding = '0.75rem 0';
+            mainNav.style.borderTop = '1px solid #e5e7eb';
             mainNav.style.opacity = '1';
         }
 
