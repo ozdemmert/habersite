@@ -62,21 +62,7 @@ function isActiveCat($cat_id, $active)
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dosyalarımız</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-        .line-clamp-2 {
-            display: -webkit-box;
-            -webkit-line-clamp: 2;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-        }
-
-        .line-clamp-3 {
-            display: -webkit-box;
-            -webkit-line-clamp: 3;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-        }
-    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 
 <body class="bg-white">
@@ -132,7 +118,8 @@ function isActiveCat($cat_id, $active)
                                     <span
                                         class="text-xs text-[#f39200] font-medium mb-1"><?php echo date('d F Y', strtotime($dosya['created_at'])); ?></span>
                                     <h3 class="font-semibold text-base mb-2 line-clamp-2 text-[#022d5a]">
-                                        <?php echo htmlspecialchars($dosya['title']); ?></h3>
+                                        <?php echo htmlspecialchars($dosya['title']); ?>
+                                    </h3>
                                     <p class="text-sm text-gray-600 mb-3 line-clamp-3">
                                         <?php echo isset($dosya['content']) ? mb_substr(strip_tags($dosya['content']), 0, 120) . '...' : ''; ?>
                                     </p>

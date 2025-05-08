@@ -178,14 +178,27 @@ $categories = $categoryObj->getAll();
             id="mainNav">
             <div class="max-w-5xl mx-auto px-4">
                 <ul class="flex justify-center text-sm font-medium space-x-12">
-                    <li><a href="index" class="hover:text-red-600 transition duration-300">Ana Sayfa</a></li>
-                    <li><a href="dosya" class="hover:text-red-600 transition duration-300">Dosya</a></li>
-                    <li><a href="hafiza" class="hover:text-red-600 transition duration-300">Hafıza</a></li>
-                    <li><a href="storymaps" class="hover:text-red-600 transition duration-300">Story Maps</a></li>
-                    <li><a href="timeline" class="hover:text-red-600 transition duration-300">Zaman Çizelgesi</a></li>
-                    <li><a href="4-nokta-1" class="hover:text-blue-900 transition-colors duration-200">4 Nokta 1</a>
+                    <li><a href="index"
+                            class="<?php echo basename($_SERVER['PHP_SELF']) == 'index.php' ? 'font-bold text-blue-900' : 'hover:text-red-600'; ?> transition duration-300">Ana
+                            Sayfa</a></li>
+                    <li><a href="dosya"
+                            class="<?php echo basename($_SERVER['PHP_SELF']) == 'dosya.php' ? 'font-bold text-blue-900' : 'hover:text-red-600'; ?> transition duration-300">Dosya</a>
                     </li>
-                    <li><a href="portre" class="hover:text-blue-900 transition-colors duration-200">Portre</a></li>
+                    <li><a href="hafiza"
+                            class="<?php echo basename($_SERVER['PHP_SELF']) == 'hafiza.php' ? 'font-bold text-blue-900' : 'hover:text-red-600'; ?> transition duration-300">Hafıza</a>
+                    </li>
+                    <li><a href="storymaps"
+                            class="<?php echo basename($_SERVER['PHP_SELF']) == 'storymaps.php' ? 'font-bold text-blue-900' : 'hover:text-red-600'; ?> transition duration-300">Story
+                            Maps</a></li>
+                    <li><a href="timeline"
+                            class="<?php echo basename($_SERVER['PHP_SELF']) == 'timeline.php' ? 'font-bold text-blue-900' : 'hover:text-red-600'; ?> transition duration-300">Zaman
+                            Çizelgesi</a></li>
+                    <li><a href="4-nokta-1"
+                            class="<?php echo basename($_SERVER['PHP_SELF']) == '4-nokta-1.php' ? 'font-bold text-blue-900' : 'hover:text-red-600'; ?> transition duration-300">4
+                            Nokta 1</a></li>
+                    <li><a href="portre"
+                            class="<?php echo basename($_SERVER['PHP_SELF']) == 'portre.php' ? 'font-bold text-blue-900' : 'hover:text-red-600'; ?> transition duration-300">Portre</a>
+                    </li>
                 </ul>
             </div>
         </nav>
