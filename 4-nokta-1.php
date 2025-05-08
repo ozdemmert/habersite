@@ -138,8 +138,18 @@ function isActiveCat($cat_id, $active)
                                             <?php echo htmlspecialchars($authors[$i]); ?>
                                         </h3> <?php // Styled author name ?>
                                         <div class="mt-1 text-sm text-gray-500"> <?php echo $authors_info[$i]; ?> </div>
-                                        <div class="mt-4 text-sm text-gray-700 prose prose-sm max-w-none">
-                                            <?php echo $authors_comments[$i]; ?>
+                                        <div class="mt-4 text-sm text-gray-700 prose prose-sm max-w-none line-clamp-3">
+                                            <?php echo substr(strip_tags($authors_comments[$i]), 0, 250); ?>...
+                                        </div>
+                                        <div class="mt-4">
+                                            <a href="4-nokta-1-yazar.php?id=<?php echo $all_items[0]['id']; ?>&yazar=<?php echo $i; ?>" 
+                                               class="inline-flex items-center text-sm font-medium text-[#f39200] hover:text-[#022d5a] transition-colors duration-200">
+                                                Detayını Oku
+                                                <svg class="ml-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                        d="M9 5l7 7-7 7" />
+                                                </svg>
+                                            </a>
                                         </div>
                                     </div>
                                 </div>
