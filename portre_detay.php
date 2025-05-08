@@ -191,6 +191,7 @@ foreach ($all_portres as $item) {
 </head>
 <body>
 <?php require_once 'templates/header.php'; ?>
+<?php require_once 'templates/backtotopbutton.php'; ?>
     <main class="min-h-screen">
         <!-- Hero Section -->
         <div class="portre-hero">

@@ -68,6 +68,7 @@ if (!empty($hafiza['category'])) {
 </head>
 <body class="bg-white">
 <?php require_once 'templates/header.php'; ?>
+<?php require_once 'templates/backtotopbutton.php'; ?>
     <main class="py-6">
         <div class="max-w-5xl mx-auto px-4">
             <!-- Breadcrumb -->
